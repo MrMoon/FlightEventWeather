@@ -3,12 +3,10 @@ import sqlite3
 import time
 from sqlite3 import Error
 
-from database import create_table
+import database.create_table
 
 connection = None
-db_name = create_table.dbname
 FRESHNESS_DURATION = 21600
-
 
 
 def connection_to_db_file(file):
@@ -44,7 +42,7 @@ def clean_unfresh_data(table_name):
 
 def insert(insert_query, data):
     if connection is None:
-        connection_to_db_file(db_name)
+        connection_to_db_file(database.create_table.get_db_name())
     cursor = connection.cursor()
     cursor.execute(insert_query, data)
     connection.commit()
@@ -53,7 +51,7 @@ def insert(insert_query, data):
 
 def select(select_query, params):
     if connection is None:
-        connection_to_db_file(db_name)
+        connection_to_db_file(database.create_table.get_db_name())
     cursor = connection.cursor()
     cursor.execute(select_query, params)
     rows = cursor.fetchall()
@@ -62,7 +60,7 @@ def select(select_query, params):
 
 def delete(delete_query, params):
     if connection is None:
-        connection_to_db_file(db_name)
+        connection_to_db_file(database.create_table.get_db_name())
     curses = connection.cursor()
     curses.execute(delete_query, params)
     connection.commit()

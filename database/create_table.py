@@ -1,7 +1,7 @@
 import logging
 from sqlite3 import Error
 
-from database import database_api
+from database.database_api import connection_to_db_file
 
 dbname = "events.db"
 
@@ -42,8 +42,12 @@ def create_table(connection, sql_create_query):
         logging.error(f'SQLite Create table from statement ${sql_create_query}, more info: {e}')
 
 
+def get_db_name():
+    return dbname
+
+
 def database_init():
-    connection = database_api.connection_to_db_file(dbname)
+    connection = connection_to_db_file(dbname)
 
     if connection is not None:
         create_table(connection, SQL_CREATE_TOP_EVENTS_TABLE)
